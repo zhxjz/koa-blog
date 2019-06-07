@@ -8,8 +8,9 @@ const app = new koa();
 const router = new Router();
 app.use(bodyParser());
 
-// 引入users.js
+// 引入
 const blogs = require("./routes/api/blogs")
+const review = require('./routes/api/review')
 
 // 路由
 router.get("/",async ctx=>{
@@ -31,6 +32,7 @@ mongoose
     });
 // 配置路由地址localhost:5000/api/users
 router.use('/api/blogs',blogs);
+router.use('/api/review',review);
 
 
 app.use(cors({
