@@ -12,6 +12,7 @@ const Review = require('../../models/Review');
  */
 router.get("/test",async ctx=>{
     ctx.status=200;
+    ctx.set("Access-Control-Allow-Credentials", true);
     ctx.body={msg:'review test page。。'};
 })
 
@@ -25,6 +26,7 @@ router.get("/list/:id",async ctx=>{
     await Review.findOne({blogid:ctx.params.id}).then(
     review=>{
         // console.log(review);
+        ctx.set("Access-Control-Allow-Credentials", true);
         ctx.body={success:true,review:review};
     }
     ).
@@ -56,6 +58,7 @@ router.post('/addone',async ctx=>{
         });
         await newreview.save().then(
             data=>{
+                ctx.set("Access-Control-Allow-Credentials", true);
                 ctx.body=data;
         })
     }
@@ -68,6 +71,7 @@ router.post('/addone',async ctx=>{
         reviewlist.push(item);
         await Review.update({blogid:blogid},{reviewlist:reviewlist})
         .then (data=>{
+            ctx.set("Access-Control-Allow-Credentials", true);
             ctx.body=data;
         })
     }
@@ -104,6 +108,7 @@ router.post('/replyreply',async ctx=>{
         }
     }
     else{
+        ctx.set("Access-Control-Allow-Credentials", true);
         ctx.body={message:'sth wrong--'};
     }
 })

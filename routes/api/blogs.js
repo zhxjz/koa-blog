@@ -12,6 +12,7 @@ const Blogs = require('../../models/Blogs');
  * @access 接口是公开的
  */
 router.get("/test",async ctx=>{
+    ctx.set("Access-Control-Allow-Credentials", true);
     ctx.status=200;
     ctx.body={msg:'test page。。'};
 })
@@ -33,6 +34,7 @@ router.post("/add",async ctx =>{
         });
         // 存储到数据库
         await newBlog.save().then(blog=>{
+            ctx.set("Access-Control-Allow-Credentials", true);
             ctx.body={success:true,blog:blog};
         }).
         catch(err=>{
@@ -50,6 +52,7 @@ router.post("/add",async ctx =>{
  */
 router.get("/list",async ctx =>{
         await Blogs.find().then(blog=>{
+            ctx.set("Access-Control-Allow-Credentials", true);
             ctx.body={success:true,blog:blog};
         }).
         catch(err=>{
@@ -67,6 +70,7 @@ router.get("/findone/:id",async ctx=>{
     // console.log(ctx.params.id);
     await Blogs.findById(ctx.params.id)
     .then(data=>{
+        ctx.set("Access-Control-Allow-Credentials", true);
         ctx.body={success:true,blog:data}
     })
     .catch(err=>{
