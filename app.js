@@ -35,20 +35,16 @@ router.use('/api/blogs',blogs);
 router.use('/api/review',review);
 
 
-// app.use(cors({
-//     origin: function (ctx) {
-//         if (ctx.url === '/test') {
-//             return "*"; // 允许来自所有域名请求
-//         }
-//         // return 'http://localhost:8080';
-//         return "*";
-//     },
-//     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-//     maxAge: 5,
-//     credentials: true,
-//     allowMethods: ['GET', 'POST', 'DELETE'],
-//     allowHeaders: ['Content-Type', 'Authorization', 'Accept']
-// }))
+app.use(cors({
+    origin: function (ctx) {
+        return "*";
+    },
+    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    maxAge: 5,
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'DELETE'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept']
+}))
 app.use(cors());
 
 // 配置路由
