@@ -51,11 +51,12 @@ router.post("/add",async ctx =>{
 router.post('/del',async ctx=>{
     var nowid = ctx.request.body.del_blogid;
     await Blogs.findByIdAndRemove(nowid).then(mes=>{
-        console.log(mes);
+        // console.log(mes);
+        ctx.set("Access-Control-Allow-Credentials", true);
         ctx.body={success:true};
     })
     .catch(err=>{
-        console.log(err)
+        // console.log(err)
     })
 })
 
