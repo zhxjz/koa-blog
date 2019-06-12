@@ -45,7 +45,6 @@ app.use(cors({
     allowMethods: ['GET', 'POST', 'DELETE'],
     allowHeaders: ['Content-Type', 'Authorization', 'Accept']
 }))
-app.use(cors());
 
 // 配置路由
 app.use(router.routes());

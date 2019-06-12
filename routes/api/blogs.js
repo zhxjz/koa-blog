@@ -43,7 +43,21 @@ router.post("/add",async ctx =>{
     }
 //}
 );
-
+/**
+ * @route POST api/blogs/del
+ * @desc 注册接口地址
+ * @access 接口是公开的
+ */
+router.post('/del',async ctx=>{
+    var nowid = ctx.request.body.del_blogid;
+    await Blogs.findByIdAndRemove(nowid).then(mes=>{
+        console.log(mes);
+        ctx.body={success:true};
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
 
 /**
  * @route GET api/blogs/list
@@ -61,6 +75,23 @@ router.get("/list",async ctx =>{
     }
 //}
 );
+
+/**
+ * @route GET api/blogs/mylist
+ * @desc 注册接口地址
+ * @access 接口是公开的
+ */
+router.get("/mylist/:id",async ctx =>{
+    await Blogs.find({author:ctx.params.id}).then(blog=>{
+        ctx.set("Access-Control-Allow-Credentials", true);
+        ctx.body={success:true,blog:blog};
+    }).
+    catch(err=>{
+        console.log(err);
+    });
+}
+);
+
 /**
  * @route GET api/blogs/findone/id
  * @desc 注册接口地址
@@ -72,6 +103,29 @@ router.get("/findone/:id",async ctx=>{
     .then(data=>{
         ctx.set("Access-Control-Allow-Credentials", true);
         ctx.body={success:true,blog:data}
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
+
+/**
+ * @route GET api/blogs/edit/id
+ * @desc 注册接口地址
+ * @access 接口是公开的
+ */
+router.post("/edit",async ctx=>{
+    let id=ctx.request.body._id;
+    await Blogs.findOneAndUpdate(id,{
+        title:ctx.request.body.title,
+        content:ctx.request.body.title,
+        categories: ctx.request.body.categories,
+        hidename:ctx.request.body.hidename,
+        author: ctx.request.body.author
+    })
+    .then(data=>{
+        ctx.set("Access-Control-Allow-Credentials", true);
+        ctx.body={success:true}
     })
     .catch(err=>{
         console.log(err);
