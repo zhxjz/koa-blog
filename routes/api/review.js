@@ -1,9 +1,10 @@
 const Router = require("koa-router");
 // 路由
 const router = new Router();
-
 // 引入数据模型
 const Review = require('../../models/Review');
+const Message = require('../../models/Message');
+const Blog = require('../../models/Blogs')
 
 /**
  * @route GET api/review/test
@@ -25,7 +26,6 @@ router.get("/list/:id",async ctx=>{
     // console.log(ctx.params.id);
     await Review.findOne({blogid:ctx.params.id}).then(
     review=>{
-        // console.log(review);
         ctx.set("Access-Control-Allow-Credentials", true);
         ctx.body={success:true,review:review};
     }
@@ -45,9 +45,8 @@ router.post('/addone',async ctx=>{
     let blogid=ctx.request.body.blogid;
     let hostname = ctx.request.body.hostname;
     let hostcontent = ctx.request.body.hostcontent;
-
     let ok = await Review.findOne({blogid:blogid});
-    console.log(ok);
+    // console.log(ok);
     if(!ok){
         let newreview = new Review ({
             blogid:blogid,
@@ -60,7 +59,9 @@ router.post('/addone',async ctx=>{
             data=>{
                 ctx.set("Access-Control-Allow-Credentials", true);
                 ctx.body=data;
-        })
+        }).then(
+            await addmessage(blogid,hostname,hostcontent)
+        )
     }
     else{
         let reviewlist = ok.reviewlist;
@@ -73,7 +74,9 @@ router.post('/addone',async ctx=>{
         .then (data=>{
             ctx.set("Access-Control-Allow-Credentials", true);
             ctx.body=data;
-        })
+        }).then(
+            await addmessage(blogid,hostname,hostcontent)
+        )
     }
 })
 
@@ -101,8 +104,12 @@ router.post('/replyreply',async ctx=>{
                 ok.reviewlist[i].reviewitem.push(newreply);
                 await ok.save(ok.reviewlist[i]._id)
                 .then(data=>{
+                    ctx.set("Access-Control-Allow-Credentials", true);
                     ctx.body=data;
                 })
+                .then(
+                    await addmessage2(blogid,oldname,curname,curcontent)
+                )
                 break;
             }
         }
@@ -113,3 +120,46 @@ router.post('/replyreply',async ctx=>{
     }
 })
  module.exports = router.routes();
+ async function addmessage(blogid,nowname,curcontent){
+    let blog = await Blog.findOne({_id:blogid});
+    let ok = await Message.findOne({authorname:blog.author});
+    let newmessage = {
+            reusername:nowname,
+            blogid:blogid,
+		    blogname: blog.title, //博客的name
+		    content: curcontent,  //评论内容
+		    actiontype: 1,
+		    status: 0 //0表示未查看, 1表示已查看
+        };
+    if(ok){    
+        ok.messagelist.push(newmessage);
+        await ok.save();
+    }
+    else{
+        ok = new Message({authorname:blog.author});
+        ok.messagelist.push(newmessage);
+        await ok.save();
+    }
+ }
+
+ async function addmessage2(blogid,oldname,nowname,curcontent){
+    let blog = await Blog.findOne({_id:blogid});
+    let ok = await Message.findOne({authorname:oldname});
+    let newmessage = {
+            reusername:nowname,
+            blogid:blogid,
+		    blogname: blog.title, //博客的name
+		    content: curcontent,  //评论内容
+		    actiontype: 1,
+		    status: 0 //0表示未查看, 1表示已查看
+        };
+    if(ok){    
+        ok.messagelist.push(newmessage);
+        await ok.save();
+    }
+    else{
+        ok = new Message({authorname:oldname});
+        ok.messagelist.push(newmessage);
+        await ok.save();
+    }
+ }

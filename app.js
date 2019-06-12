@@ -11,6 +11,7 @@ app.use(bodyParser());
 // 引入
 const blogs = require("./routes/api/blogs")
 const review = require('./routes/api/review')
+const messages = require('./routes/api/message')
 
 // 路由
 router.get("/",async ctx=>{
@@ -33,12 +34,11 @@ mongoose
 // 配置路由地址localhost:5000/api/users
 router.use('/api/blogs',blogs);
 router.use('/api/review',review);
+router.use('/api/message',messages);
 
 
 app.use(cors({
-    origin: function (ctx) {
-        return "*";
-    },
+    origin: ['http://localhost:8080'],
     exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
     credentials: true,
