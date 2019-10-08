@@ -12,6 +12,7 @@ app.use(bodyParser());
 const blogs = require("./routes/api/blogs")
 const review = require('./routes/api/review')
 const messages = require('./routes/api/message')
+const listes = require('./routes/api/listes')
 
 // 路由
 router.get("/",async ctx=>{
@@ -35,6 +36,7 @@ mongoose
 router.use('/api/blogs',blogs);
 router.use('/api/review',review);
 router.use('/api/message',messages);
+router.use('/api/listes',listes);
 
 
 app.use(cors({
