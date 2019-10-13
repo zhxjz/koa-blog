@@ -83,6 +83,8 @@ router.get("/level4",async ctx =>{
 }
 );
 
+
+
 /**
  * level6 list
  * @route GET api/listes/level6
@@ -92,6 +94,26 @@ router.get("/level4",async ctx =>{
 router.get("/level6",async ctx =>{
     await LisTes.find({ 
         tag:"level6"
+     }).
+    then(tes=>{
+        ctx.set("Access-Control-Allow-Credentials", true);
+        ctx.body={status:"Success",tests:tes};
+    }).
+    catch(err=>{
+        console.log(err);
+    });
+}
+);
+
+/**
+ * news list
+ * @route GET api/listes/news
+ * @desc 注册接口地址
+ * @access 接口是公开的
+ */
+router.get("/news",async ctx =>{
+    await LisTes.find({ 
+        tag:"news"
      }).
     then(tes=>{
         ctx.set("Access-Control-Allow-Credentials", true);
