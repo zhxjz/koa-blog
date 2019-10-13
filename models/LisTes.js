@@ -24,6 +24,9 @@ const LisTesSchema = new schema({
     date:{
         type:Date,
         default:Date.now
+    },
+    tag:{
+        type:String
     }
 });
 
