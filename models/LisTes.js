@@ -27,6 +27,9 @@ const LisTesSchema = new schema({
     },
     tag:{
         type:String
+    },
+    words:{
+        type:[String]
     }
 });
 

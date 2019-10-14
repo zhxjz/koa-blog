@@ -47,6 +47,36 @@ router.post("/add",async ctx =>{
 );
 
 /**
+ * add a test
+ * @route POST api/listes/addnews
+ * @desc 注册接口地址
+ * @access 接口是公开的
+ */
+router.post("/addnews",async ctx =>{
+    // 存储到数据库
+        const newTes = new LisTes({
+            title: ctx.request.body.title,
+            author: ctx.request.body.author,
+            ques:ctx.request.body.ques,
+            ans:ctx.request.body.ans,
+            lis:ctx.request.body.lis,
+            org:ctx.request.body.org,
+            tag:'news',
+            words:ctx.request.body.words
+        });
+        // 存储到数据库
+        await newTes.save().then(tes=>{
+            ctx.set("Access-Control-Allow-Credentials", true);
+            ctx.body={status:"Success",listes:tes};
+        }).
+        catch(err=>{
+            ctx.set("Access-Control-Allow-Credentials", true);
+            ctx.body={status:"Error",err:err};
+        });
+    }
+);
+
+/**
  * all list
  * @route GET api/listes/list
  * @desc 注册接口地址
@@ -82,8 +112,6 @@ router.get("/level4",async ctx =>{
     });
 }
 );
-
-
 
 /**
  * level6 list
