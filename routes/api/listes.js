@@ -171,5 +171,23 @@ router.get("/list/:id",async ctx =>{
     });
 }
 );
+/**
+ * delete one paper by id
+ * @route GET api/listes/del
+ * @desc 注册接口地址
+ * @access 接口是公开的
+ */
+router.get("/del/:id",async ctx =>{
+    await LisTes.deleteOne({"_id":ctx.params.id}).
+    then(test=>{
+        ctx.set("Access-Control-Allow-Credentials", true);
+        ctx.body={status:"Success",test:test};
+    }).
+    catch(err=>{
+        ctx.set("Access-Control-Allow-Credentials", true);
+        ctx.body={status:"Error",err:err};
+    });
+}
+);
 
 module.exports = router.routes();
