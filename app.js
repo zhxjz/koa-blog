@@ -13,6 +13,7 @@ const blogs = require("./routes/api/blogs")
 const review = require('./routes/api/review')
 const messages = require('./routes/api/message')
 const listes = require('./routes/api/listes')
+const hwk = require('./routes/api/hwk')
 
 // 路由
 router.get("/",async ctx=>{
@@ -37,7 +38,7 @@ router.use('/api/blogs',blogs);
 router.use('/api/review',review);
 router.use('/api/message',messages);
 router.use('/api/listes',listes);
-
+router.use('/api/hwk',hwk);
 
 app.use(cors({
     origin: ['http://localhost:8080'],
